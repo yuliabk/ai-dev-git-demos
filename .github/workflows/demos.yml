@@ -1,0 +1,22 @@
+name: Run demos
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  demos:
+    runs-on: ubuntu-latest
+    env:
+      DEMO_AUTO: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install -g @fission-ai/openspec
+      - name: Demo 1 - Worktrees
+        run: bash demo1_worktrees.sh "$RUNNER_TEMP/wt"
+      - name: Demo 2 - Protect main (local part)
+        run: bash demo2_protect_main.sh "$RUNNER_TEMP/pm"
+      - name: Demo 3 - OpenSpec
+        run: bash demo3_openspec.sh "$RUNNER_TEMP/os"
